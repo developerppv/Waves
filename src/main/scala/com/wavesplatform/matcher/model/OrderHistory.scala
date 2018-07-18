@@ -71,11 +71,11 @@ case class OrderHistoryImpl(db: DB, settings: MatcherSettings) extends SubStorag
   private val AddressToActiveOrdersPrefix = "a-addr-orders".getBytes(Charset)
   private val AddressPortfolioPrefix      = "portfolios".getBytes(Charset)
 
-  private val timer = Kamon.timer("matcher.order-history.impl")
+  private val timer                  = Kamon.timer("matcher.order-history.impl")
   private val saveOpenPortfolioTimer = timer.refine("action" -> "save-open-portfolio")
-  private val saveOrderInfoTimer = timer.refine("action" -> "save-order-info")
-  private val addToFinalTimer = timer.refine("action" -> "add-to-final")
-  private val openPortfolioTimer = timer.refine("action" -> "open-portfolio")
+  private val saveOrderInfoTimer     = timer.refine("action" -> "save-order-info")
+  private val addToFinalTimer        = timer.refine("action" -> "add-to-final")
+  private val openPortfolioTimer     = timer.refine("action" -> "open-portfolio")
 
   def addToFinal(address: String, orderId: String): Unit = addToFinalTimer.measure {
     get(OrderIdsCodec)(makeKey(AddressToOrdersPrefix, address)) match {

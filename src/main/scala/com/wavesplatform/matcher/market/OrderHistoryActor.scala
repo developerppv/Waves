@@ -28,9 +28,9 @@ class OrderHistoryActor(db: DB, val settings: MatcherSettings, val utxPool: UtxP
 
   val orderHistory = OrderHistoryImpl(db, settings)
 
-  private val timer = Kamon.timer("matcher.order-history")
-  private val addedTimer = timer.refine("event" -> "added")
-  private val executedTimer = timer.refine("event" -> "executed")
+  private val timer          = Kamon.timer("matcher.order-history")
+  private val addedTimer     = timer.refine("event" -> "added")
+  private val executedTimer  = timer.refine("event" -> "executed")
   private val cancelledTimer = timer.refine("event" -> "cancelled")
 
   override def preStart(): Unit = {
@@ -102,7 +102,6 @@ class OrderHistoryActor(db: DB, val settings: MatcherSettings, val utxPool: UtxP
     } else {
       sender() ! GetOrderHistoryResponse(orderHistory.fetchAllOrderHistory(req.address))
     }
-
 
   def forceCancelOrder(id: String): Unit = {
     orderHistory.order(id).map((_, orderHistory.orderInfo(id))) match {
